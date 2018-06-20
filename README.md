@@ -9,8 +9,11 @@ Some questions that stemmed from data exploration.
 1. Is the mortgage data a good predictor of defaults?
 2. Which variables are highly correlated with loan status?
 3. Will credit information be a highly correlated variable? 
-# Data Cleaning
 
+The original dataset had 150 variables and 1,646,801 observations.  The dataset consisted of observations pertaining to car loans, debt consolidation, educational, wedding, etc.
+
+# Data Cleaning
+The dataset was consolidated to only focus on mortgage loans (excluding those taken out for home improvement purposes). 
 # EDA
 
 # Models

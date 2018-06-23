@@ -20,16 +20,16 @@ accepted <- accepted[accepted$purpose!="" & accepted$purpose!="car"& accepted$pu
 At this point in the process there are 7,286 observations and 150 variables. I then cleaned up some of the punctuations from variables like emp.title.
 The next step was to change all of the character variables to numeric values.  Loan Status which had options like fully charged, charged off, current, etc. were changed to either 0 or 1.  1 represented "no default" and 0 represented "default".
 
-accepted$loan_status[accepted$loan_status == "Fully Paid"] <- 1
-accepted$loan_status[accepted$loan_status == "Charged Off"] <- 0
-accepted$loan_status[accepted$loan_status == "Current"] <- 1
-accepted$loan_status[accepted$loan_status == "Default"] <- 0
-accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Charged off"] <- 0
-accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Charged Off"] <- 0
-accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Fully Paid"] <- 1
-accepted$loan_status[accepted$loan_status == "In Grace Period"] <- 1
-accepted$loan_status[accepted$loan_status == "Late (16-30 days)"] <- 0
-accepted$loan_status[accepted$loan_status == "Late (31-120 days)"] <- 0
+accepted$loan_status[accepted$loan_status == "Fully Paid"] <- 1                                                                         
+accepted$loan_status[accepted$loan_status == "Charged Off"] <- 0                                                                         
+accepted$loan_status[accepted$loan_status == "Current"] <- 1                                                                             
+accepted$loan_status[accepted$loan_status == "Default"] <- 0                                                                             
+accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Charged off"] <- 0                                 
+accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Charged Off"] <- 0                                 
+accepted$loan_status[accepted$loan_status == "Does not meet the credit policy. Status:Fully Paid"] <- 1                                 
+accepted$loan_status[accepted$loan_status == "In Grace Period"] <- 1                                                                     
+accepted$loan_status[accepted$loan_status == "Late (16-30 days)"] <- 0                                                                   
+accepted$loan_status[accepted$loan_status == "Late (31-120 days)"] <- 0                                                                 
 
 
 # EDA

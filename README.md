@@ -63,7 +63,17 @@ for(i in 1:ncol(accepted_3)){
   accepted_3[is.na(accepted_3[,i]), i] <- mean(accepted_3[,i], na.rm = TRUE)                                                             
 }
 
+I then viewed that data after cleaning.                                                                                                  
+summary(accepted)                                                                                                                       
+str(accepted)
+
 # EDA
+I also removed some of the dti outliers.                                                                                                 
+hist(accepted$dti)                                                                                                                       
+remove_outliers <- function(x, na.rm = TRUE, ...) {                                                                                        qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)                                                                                H <- 1.5 * IQR(x, na.rm = na.rm)                                                                                                        y <- x                                                                                                                                  y[x < (qnt[1] - H)] <- NA                                                                                                                y[x > (qnt[2] + H)] <- NA                                                                                                                y                                                                                                                                   
+ }                                                                                                                                       
+dti_no_outliers <- remove_outliers(accepted$dti)                                                                                         
+hist(dti_no_outliers)                                                                                                                   
 
 # Models
 

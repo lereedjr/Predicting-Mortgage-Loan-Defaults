@@ -62,6 +62,7 @@ Then the missing values were replaced using the code below.
 for(i in 1:ncol(accepted_3)){                                                                                                           
   accepted_3[is.na(accepted_3[,i]), i] <- mean(accepted_3[,i], na.rm = TRUE)                                                             
 }
+
 # EDA
 
 # Models

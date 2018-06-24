@@ -81,7 +81,7 @@ I created a few visuals to take a look at the credit scores.
 
 hist(accepted_2$fico_range_high)
 
-![High Credit Histogram](hist_high/hist_high.png)
+(hist_high.png)
 
 # Models
 

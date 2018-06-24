@@ -57,6 +57,11 @@ accepted_3$disbursement_method <- as.numeric(accepted_3$disbursement_method)
 accepted_3$debt_settlement_flag <- as.numeric(accepted_3$debt_settlement_flag)                                                           
 accepted_3$settlement_status <- as.numeric(accepted_3$settlement_status)                                                                 
 
+Then the missing values were replaced using the code below.
+
+for(i in 1:ncol(accepted_3)){                                                                                                           
+  accepted_3[is.na(accepted_3[,i]), i] <- mean(accepted_3[,i], na.rm = TRUE)                                                             
+}
 # EDA
 
 # Models

@@ -31,6 +31,7 @@ accepted$loan_status[accepted$loan_status == "In Grace Period"] <- 1
 accepted$loan_status[accepted$loan_status == "Late (16-30 days)"] <- 0                                                                   
 accepted$loan_status[accepted$loan_status == "Late (31-120 days)"] <- 0                                                                 
 
+The other character variables that were edited were emp_length, grade, home_ownership, verification_status, pymnt_plan, purpose, initial_list_status, application_type, verification_status_joint, disbursement_method, debt_settlement_flag, and settlement_status.
 
 # EDA
 

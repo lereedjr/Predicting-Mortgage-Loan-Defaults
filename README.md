@@ -6,9 +6,10 @@ This project stemmed from the need to find potential data that could be a good p
 
 # Data Observations
 Some questions that stemmed from data exploration.
-1. Is the mortgage data a good predictor of defaults?
-2. Which variables are highly correlated with loan status?
-3. Will credit information be a highly correlated variable? 
+
+* Is the mortgage data a good predictor of defaults?
+* Which variables are highly correlated with loan status?
+* Will credit information be a highly correlated variable? 
 
 The original dataset had 150 variables and 1,646,801 observations.  The dataset consisted of observations pertaining to car loans, debt consolidation, educational, wedding, etc.
 
@@ -68,12 +69,19 @@ summary(accepted)
 str(accepted)
 
 # EDA
-I also removed some of the dti outliers.                                                                                                 
+I also removed some of the dti outliers.        
+
 hist(accepted$dti)                                                                                                                       
-remove_outliers <- function(x, na.rm = TRUE, ...) {                                                                                        qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)                                                                                H <- 1.5 * IQR(x, na.rm = na.rm)                                                                                                        y <- x                                                                                                                                  y[x < (qnt[1] - H)] <- NA                                                                                                                y[x > (qnt[2] + H)] <- NA                                                                                                                y                                                                                                                                   
+remove_outliers <- function(x, na.rm = TRUE, ...) {                                                                                          qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)                                                                                H <- 1.5 * IQR(x, na.rm = na.rm)                                                                                                        y <- x                                                                                                                                  y[x < (qnt[1] - H)] <- NA                                                                                                                y[x > (qnt[2] + H)] <- NA                                                                                                                y                                                                                                                                   
  }                                                                                                                                       
 dti_no_outliers <- remove_outliers(accepted$dti)                                                                                         
 hist(dti_no_outliers)                                                                                                                   
+
+I created a few visuals to take a look at the credit scores.
+
+hist(accepted_2$fico_range_high)
+
+![High Credit Histogram](C:/Users/tday/Documents/Summer Semester 2018/Data Practicuum I/Week 8/hist_high.png)
 
 # Models
 

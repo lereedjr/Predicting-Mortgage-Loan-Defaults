@@ -87,7 +87,25 @@ hist(accepted_2$fico_range_low)
 
 ![Low Credit Histogram](hist_low.png)
 
+**NEED TO ADD MORE**
+
 # Models
+The following packages need to be loaded for each model and graphs.
+
+library(dplyr)                                                                                                                           
+library(ggplot2)                                                                                                                         
+library(caret)                                                                                                                           
+library(rpart)
+library(rpart.plot)                                                                                                                     
+library(randomForest)                                                                                                                   
+library(corrplot)                                                                                                                       
+library(e1071)                                                                                                                           
+library(xgboost)                                                                                                                         
+library(stringr)                                                                                                                         library(tm)                                                                                                                             
+library(rms)                                                                                                                             
+library(glmnet)                                                                                                                         
+
+
 
 # Analysis
 

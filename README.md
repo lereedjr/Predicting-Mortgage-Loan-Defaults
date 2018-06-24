@@ -83,6 +83,10 @@ hist(accepted_2$fico_range_high)
 
 ![High Credit Historam](hist_high.png)
 
+hist(accepted_2$fico_range_low)
+
+![Low Credit Histogram](hist_low.png)
+
 # Models
 
 # Analysis

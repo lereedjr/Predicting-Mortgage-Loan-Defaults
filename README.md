@@ -31,7 +31,31 @@ accepted$loan_status[accepted$loan_status == "In Grace Period"] <- 1
 accepted$loan_status[accepted$loan_status == "Late (16-30 days)"] <- 0                                                                   
 accepted$loan_status[accepted$loan_status == "Late (31-120 days)"] <- 0                                                                 
 
-The other character variables that were edited were emp_length, grade, home_ownership, verification_status, pymnt_plan, purpose, initial_list_status, application_type, verification_status_joint, disbursement_method, debt_settlement_flag, and settlement_status.
+The other character variables that were edited were emp_length, grade, home_ownership, verification_status, pymnt_plan, purpose, initial_list_status, application_type, verification_status_joint, disbursement_method, debt_settlement_flag, and settlement_status.  Then the character variables were changed to numeric variables using the code below.
+
+accepted_3$id <- as.numeric(accepted_3$id)                                                                                               
+accepted_3$issue_d <- as.numeric(accepted_3$issue_d)                                                                                     
+accepted_3$addr_state <- as.numeric(accepted_3$addr_state)                                                                               
+accepted_3$earliest_cr_line <- as.numeric(accepted_3$earliest_cr_line)                                                                   
+accepted_3$last_pymnt_d <- as.numeric(accepted_3$last_pymnt_d)                                                                           
+accepted_3$last_credit_pull_d <- as.numeric(accepted_3$last_credit_pull_d)                                                               
+accepted_3$sec_app_earliest_cr_line <- as.numeric(accepted_3$sec_app_earliest_cr_line)                                                   
+accepted_3$debt_settlement_flag_date <- as.numeric(accepted_3$debt_settlement_flag_date)                                                 
+accepted_3$settlement_date <- as.numeric(accepted_3$settlement_date)                                                                     
+accepted_3$term <- as.numeric(accepted_3$term)                                                                                           
+accepted_3$grade <- as.numeric(accepted_3$grade)                                                                                         
+accepted_3$emp_length <- as.numeric(accepted_3$emp_length)                                                                               
+accepted_3$home_ownership <- as.numeric(accepted_3$home_ownership)                                                                       
+accepted_3$verification_status <- as.numeric(accepted_3$verification_status)                                                             
+accepted_3$loan_status <- as.numeric(accepted_3$loan_status)                                                                             
+accepted_3$pymnt_plan <- as.numeric(accepted_3$pymnt_plan)                                                                               
+accepted_3$purpose <- as.numeric(accepted_3$purpose)                                                                                     
+accepted_3$initial_list_status <- as.numeric(accepted_3$initial_list_status)                                                             
+accepted_3$application_type <- as.numeric(accepted_3$application_type)                                                                   
+accepted_3$verification_status_joint <- as.numeric(accepted_3$verification_status_joint)                                                 
+accepted_3$disbursement_method <- as.numeric(accepted_3$disbursement_method)                                                             
+accepted_3$debt_settlement_flag <- as.numeric(accepted_3$debt_settlement_flag)                                                           
+accepted_3$settlement_status <- as.numeric(accepted_3$settlement_status)                                                                 
 
 # EDA
 

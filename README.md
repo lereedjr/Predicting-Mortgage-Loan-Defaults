@@ -87,6 +87,7 @@ hist(accepted_2$fico_range_low)
 
 ![Low Credit Histogram](hist_low.png)
 
+The process for the GLM model will be in the Models section below.  However, a couple of correlation 
 **NEED TO ADD MORE**
 
 # Models
@@ -104,8 +105,10 @@ library(xgboost)
 library(stringr)                                                                                                                         library(tm)                                                                                                                             
 library(rms)                                                                                                                             
 library(glmnet)                                                                                                                         
+library(pscl)
+library(ROCR)
 
-
+#### GLM
 
 # Analysis
 

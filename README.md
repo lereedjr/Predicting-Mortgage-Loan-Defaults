@@ -110,7 +110,7 @@ library(ROCR)
 
 #### Logistic Regression Model
 
-I first split my data into a test and training set.  I then ran a glm model and the results produced nothing entirely significant.
+I first split my data into a test and training set.  I then fit the model and the results produced nothing entirely significant.
 
 set.seed(123)
 ind = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
@@ -263,7 +263,7 @@ AIC: 8750.3
 
 Number of Fisher Scoring iterations: 24
 
-However after running the anova model it produced some better results to work with.
+However after running the anova model it produced some better results to work with.  I utilized the deviance statistic and the model statistics to determine which variables could be removed in order to run the Random Forsest and Decision Tree models.
 
 Analysis of Deviance Table
 

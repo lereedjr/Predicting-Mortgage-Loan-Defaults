@@ -69,6 +69,16 @@ summary(accepted)
 str(accepted)
 
 # EDA
+
+Below is the loan status count after the data was reduced to mortgage loans only.
+
+accepted_3 %>% group_by(loan_status) %>% summarise(count = n())                                                                         
+ A tibble: 2 x 2                                                                                                                         
+  loan_status count                                                                                                                     
+        <dbl> <int>                                                                                                                     
+           0  1044                                                                                                                     
+           1  6224                                                                                                                     
+
 I also removed some of the dti outliers.        
 
 hist(accepted$dti)                                                                                                                       
@@ -86,6 +96,7 @@ hist(accepted_2$fico_range_high)
 hist(accepted_2$fico_range_low)
 
 ![Low Credit Histogram](hist_low.png)
+
 
 The process for the GLM model will be in the Models section below.  However, a couple of correlation 
 **NEED TO ADD MORE**

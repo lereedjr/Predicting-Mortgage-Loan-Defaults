@@ -403,6 +403,50 @@ settlement_term                             1        0      4987       8506  1.0
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 anova(model, test="Chisq")
 
+#### Random Forest Model
+
+loan.rf
+
+Call:
+ randomForest(formula = loan_status ~ ., data = trainloanrf, importance = T) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 7
+
+        OOB estimate of  error rate: 8.57%
+Confusion matrix:
+    0    1 class.error
+0 468  262  0.35890411
+1 176 4203  0.04019182
+> loan.prediction = predict(loan.rf, testloanrf)
+> confusionMatrix(table(loan.prediction, testloanrf$loan_status))
+Confusion Matrix and Statistics
+
+               
+loan.prediction    0    1
+              0  189   75
+              1  125 1770
+                                          
+               Accuracy : 0.9074          
+                 95% CI : (0.8943, 0.9193)
+    No Information Rate : 0.8546          
+    P-Value [Acc > NIR] : 1.084e-13       
+                                          
+                  Kappa : 0.601           
+ Mcnemar's Test P-Value : 0.0005306       
+                                          
+            Sensitivity : 0.60191         
+            Specificity : 0.95935         
+         Pos Pred Value : 0.71591         
+         Neg Pred Value : 0.93404         
+             Prevalence : 0.14544         
+         Detection Rate : 0.08754         
+   Detection Prevalence : 0.12228         
+      Balanced Accuracy : 0.78063         
+                                          
+       'Positive' Class : 0         
+
+
 # Analysis
 
 # Conclusion

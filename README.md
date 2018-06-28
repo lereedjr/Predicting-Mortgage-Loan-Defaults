@@ -423,14 +423,14 @@ testloanrf = accepted_6[indrf == 2,]
 loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)
 loan.rf
 
-![Random Forest](RandomForest1.png)
+![Random Forest](RandomForest1.PNG)
 
 loan.prediction = predict(loan.rf, testloanrf)
 confusionMatrix(table(loan.prediction, testloanrf$loan_status))
 
 Confusion Matrix and Statistics
 
-![Random Forest](RandomForest.png)              
+![Random Forest](RandomForest.PNG)              
                          
 The importance variables are shown below.
 
@@ -444,7 +444,7 @@ trainloandt = accepted_6[inddt == 1,]
 testloandt = accepted_6[inddt == 2,]
 confusionMatrix(table(predictions, testloandt$loan_status))
 
-![Decision Tree Confusion Matrix](DecisionTree.png)
+![Decision Tree Confusion Matrix](DecisionTree.PNG)
 
 ![Decision Tree](Decision_Tree.png)
 
@@ -453,7 +453,7 @@ rpart.plot(prune.tree,tweak=1.3)
 predictions.pt = predict(prune.tree, testloandt, type="class")
 confusionMatrix(table(predictions.pt, testloandt$loan_status))
 
-![Decision Tree Pruned](DecisionTreePruned.png)
+![Decision Tree Pruned](DecisionTreePruned.PNG)
 
 ![Decision Tree Pruned](Decision_Tree_Pruned.png)
 

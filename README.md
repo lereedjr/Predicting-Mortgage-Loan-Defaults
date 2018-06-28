@@ -423,94 +423,37 @@ testloanrf = accepted_6[indrf == 2,]
 loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)
 loan.rf
 
-![Random Forest](RandomForest.png)
+![Random Forest](RandomForest1.png)
 
 loan.prediction = predict(loan.rf, testloanrf)
 confusionMatrix(table(loan.prediction, testloanrf$loan_status))
 
 Confusion Matrix and Statistics
 
-               
-loan.prediction    0    1
-              0  189   75
-              1  125 1770
-                                          
-               Accuracy : 0.9074          
-                 95% CI : (0.8943, 0.9193)
-    No Information Rate : 0.8546          
-    P-Value [Acc > NIR] : 1.084e-13       
-                                          
-                  Kappa : 0.601           
- Mcnemar's Test P-Value : 0.0005306       
-                                          
-            Sensitivity : 0.60191         
-            Specificity : 0.95935         
-         Pos Pred Value : 0.71591         
-         Neg Pred Value : 0.93404         
-             Prevalence : 0.14544         
-         Detection Rate : 0.08754         
-   Detection Prevalence : 0.12228         
-      Balanced Accuracy : 0.78063         
-                                          
-       'Positive' Class : 0         
+![Random Forest](RandomForest.png)              
+                         
+The importance variables are shown below.
 
 ![Variable Importance](importance.png)
 
 #### Decision Tree Model
 
+set.seed(123)
+inddt = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
+trainloandt = accepted_6[inddt == 1,]
+testloandt = accepted_6[inddt == 2,]
+confusionMatrix(table(predictions, testloandt$loan_status))
 
-Confusion Matrix and Statistics
+![Decision Tree Confusion Matrix](DecisionTree.png)
 
-           
-predictions    0    1
-          0  171   68
-          1  143 1777
-                                         
-               Accuracy : 0.9023         
-                 95% CI : (0.889, 0.9145)
-    No Information Rate : 0.8546         
-    P-Value [Acc > NIR] : 2.310e-11      
-                                         
-                  Kappa : 0.5636         
- Mcnemar's Test P-Value : 3.499e-07      
-                                         
-            Sensitivity : 0.5446         
-            Specificity : 0.9631         
-         Pos Pred Value : 0.7155         
-         Neg Pred Value : 0.9255         
-             Prevalence : 0.1454         
-         Detection Rate : 0.0792         
-   Detection Prevalence : 0.1107         
-      Balanced Accuracy : 0.7539         
-                                         
-       'Positive' Class : 0    
 ![Decision Tree](Decision_Tree.png)
 
-Confusion Matrix and Statistics
+prune.tree = prune(loan.rp, cp = loan.cp)
+rpart.plot(prune.tree,tweak=1.3)
+predictions.pt = predict(prune.tree, testloandt, type="class")
+confusionMatrix(table(predictions.pt, testloandt$loan_status))
 
-              
-predictions.pt    0    1
-             0  227  126
-             1   87 1719
-                                         
-               Accuracy : 0.9013         
-                 95% CI : (0.888, 0.9136)
-    No Information Rate : 0.8546         
-    P-Value [Acc > NIR] : 5.72e-11       
-                                         
-                  Kappa : 0.6226         
- Mcnemar's Test P-Value : 0.009222       
-                                         
-            Sensitivity : 0.7229         
-            Specificity : 0.9317         
-         Pos Pred Value : 0.6431         
-         Neg Pred Value : 0.9518         
-             Prevalence : 0.1454         
-         Detection Rate : 0.1051         
-   Detection Prevalence : 0.1635         
-      Balanced Accuracy : 0.8273         
-                                         
-       'Positive' Class : 0 
+![Decision Tree Pruned](DecisionTreePruned.png)
 
 ![Decision Tree Pruned](Decision_Tree_Pruned.png)
 

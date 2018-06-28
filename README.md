@@ -423,17 +423,7 @@ testloanrf = accepted_6[indrf == 2,]
 loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)
 loan.rf
 
-Call:
- randomForest(formula = loan_status ~ ., data = trainloanrf, importance = T) 
-               Type of random forest: classification
-                     Number of trees: 500
-No. of variables tried at each split: 7
-
-        OOB estimate of  error rate: 8.57%
-Confusion matrix:
-    0    1 class.error
-0 468  262  0.35890411
-1 176 4203  0.04019182
+![Random Forest](RandomForest.png)
 
 loan.prediction = predict(loan.rf, testloanrf)
 confusionMatrix(table(loan.prediction, testloanrf$loan_status))

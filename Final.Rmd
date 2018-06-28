@@ -1,0 +1,278 @@
+---
+title: "Final"
+author: "Taylor Day"
+date: "June 27, 2018"
+output: html_document
+---
+
+```{r}
+accepted <- read.csv("C:/Users/Owner/Documents/accepted_2007_to_2017Q3.csv.gz", header = TRUE, stringsAsFactors = FALSE)
+
+#Packages to Install
+install.packages("dplyr")
+library(dplyr)
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(randomForest) 
+library(corrplot)
+library(e1071)
+library(xgboost)
+library(stringr)
+library(lubridate)
+library(tm)
+library(rms)
+library(glmnet)
+library(pROC)
+library(doMC)
+library(kernlab)
+library(nnet)
+
+# Data Cleaning 
+
+levels(accepted$purpose)
+accepted_2 <- accepted[accepted$purpose!="" & accepted$purpose!="car"& accepted$purpose!="educational" & accepted$purpose!="major_purchase" & accepted$purpose!="other" & accepted$purpose!="vacation" & accepted$purpose!="credit_card" & accepted$purpose!="medical" & accepted$purpose!="renewable_energy" & accepted$purpose!="wedding" & accepted$purpose!="debt_consolidation" & accepted$purpose!="moving" & accepted$purpose!="small_business" & accepted$purpose!="home_improvement", ]
+accepted_2 <- accepted_2[accepted_2$home_ownership!="RENT" & accepted_2$home_ownership!="NONE" & accepted_2$home_ownership!="ANY", ]
+View(accepted_3)
+install.packages("DMwR")
+library("DMwR")
+summary(accepted_3)
+str(accepted_3)
+install.packages("gsubfn")
+library("gsubfn")
+accepted_2$term <- gsub("months", "", accepted_2$term)
+accepted_2$emp_title <-gsub(",", "", accepted_2$emp_title)
+accepted_2$emp_title <- gsub("/", "", accepted_2$emp_title)
+accepted_3$loan_status <- factor(accepted_3$loan_status)
+discard_column = c("collection_recovery_fee","member_id","desc","emp_title",
+                    "funded_amnt_inv",
+                    "next_pymnt_d","policy_code",
+                    "pub_rec","recoveries","url",
+                    "zip_code", "title", "next_pymnt_d", "hardship_flag", "hardship_type", "hardship_reason", "hardship_status", "deferral_term", "hardship_amount", "hard_end_date", "payment_plan_start_date", "hardship_loan_status", "hardship_length", "hardship_dpd", "hardship_payoff_balance_amount", "hardship_last_payment_amount", "hardship_start_date", "hardship_end_date", "sub_grade","issue_y"
+ )
+accepted_3 = (accepted_2[,!(names(accepted_2) %in% discard_column)])
+
+accepted_3$loan_status[accepted_3$loan_status == "Fully Paid"] <- 1
+accepted_3$loan_status[accepted_3$loan_status == "Charged Off"] <- 0
+accepted_3$loan_status[accepted_3$loan_status == "Current"] <- 1
+accepted_3$loan_status[accepted_3$loan_status == "Default"] <- 0
+accepted_3$loan_status[accepted_3$loan_status == "Does not meet the credit policy. Status:Charged off"] <- 0
+accepted_3$loan_status[accepted_3$loan_status == "Does not meet the credit policy. Status:Charged Off"] <- 0
+accepted_3$loan_status[accepted_3$loan_status == "Does not meet the credit policy. Status:Fully Paid"] <- 1
+accepted_3$loan_status[accepted_3$loan_status == "In Grace Period"] <- 1
+accepted_3$loan_status[accepted_3$loan_status == "Late (16-30 days)"] <- 0
+accepted_3$loan_status[accepted_3$loan_status == "Late (31-120 days)"] <- 0
+
+accepted_3$emp_length[accepted_3$emp_length == "< 1 year"] <- 0.5
+accepted_3$emp_length[accepted_3$emp_length == "1 year"] <- 1
+accepted_3$emp_length[accepted_3$emp_length == "10+ years"] <- 10
+accepted_3$emp_length[accepted_3$emp_length == "2 years"] <- 2
+accepted_3$emp_length[accepted_3$emp_length == "3 years"] <- 3
+accepted_3$emp_length[accepted_3$emp_length == "4 years"] <- 4
+accepted_3$emp_length[accepted_3$emp_length == "5 years"] <- 5
+accepted_3$emp_length[accepted_3$emp_length == "6 years"] <- 6
+accepted_3$emp_length[accepted_3$emp_length == "7 years"] <- 7
+accepted_3$emp_length[accepted_3$emp_length == "8 years"] <- 8
+accepted_3$emp_length[accepted_3$emp_length == "9 years"] <- 9
+
+accepted_3$grade[accepted_3$grade == "A"] <- 1
+accepted_3$grade[accepted_3$grade == "B"] <- 2
+accepted_3$grade[accepted_3$grade == "C"] <- 3
+accepted_3$grade[accepted_3$grade == "D"] <- 4
+accepted_3$grade[accepted_3$grade == "E"] <- 5
+accepted_3$grade[accepted_3$grade == "F"] <- 6
+accepted_3$grade[accepted_3$grade == "G"] <- 7
+
+accepted_3$home_ownership[accepted_3$home_ownership == "MORTGAGE"] <- 1
+accepted_3$home_ownership[accepted_3$home_ownership == "OTHER"] <- 2
+accepted_3$home_ownership[accepted_3$home_ownership == "OWN"] <- 3
+accepted_3$home_ownership[accepted_3$home_ownership == "RENT"] <- 4
+accepted_3$home_ownership[accepted_3$home_ownership == "NONE"] <- 5
+accepted_3$home_ownership[accepted_3$home_ownership == "ANY"] <- 6
+
+
+accepted_3$verification_status[accepted_3$verification_status == "Not Verified"] <- 0
+accepted_3$verification_status[accepted_3$verification_status == "Source Verified"] <- 1
+accepted_3$verification_status[accepted_3$verification_status == "Verified"] <- 2
+
+accepted_3$pymnt_plan[accepted_3$pymnt_plan == "n"] <- 0
+accepted_3$pymnt_plan[accepted_3$pymnt_plan == "y"] <- 1
+
+accepted_3$purpose[accepted_3$purpose == "home_improvement"] <- 1
+accepted_3$purpose[accepted_3$purpose == "house"] <- 2
+
+accepted_3$initial_list_status[accepted_3$initial_list_status == "f"] <- 0
+accepted_3$initial_list_status[accepted_3$initial_list_status == "w"] <- 1
+
+accepted_3$application_type[accepted_3$application_type == "Individual"] <- 0
+accepted_3$application_type[accepted_3$application_type == "Joint App"] <- 1
+
+accepted_3$verification_status_joint[accepted_3$verification_status_joint == "Not Verified"] <- 0
+accepted_3$verification_status_joint[accepted_3$verification_status_joint == "Source Verified"] <- 1
+accepted_3$verification_status_joint[accepted_3$verification_status_joint == "Verified"] <- 2
+
+accepted_3$disbursement_method[accepted_3$disbursement_method == "Cash"] <- 0
+accepted_3$disbursement_method[accepted_3$disbursement_method == "DirectPay"] <- 1
+
+accepted_3$debt_settlement_flag[accepted_3$debt_settlement_flag == "N"] <- 0
+accepted_3$debt_settlement_flag[accepted_3$debt_settlement_flag == "Y"] <- 1
+
+accepted_3$settlement_status[accepted_3$settlement_status == "ACTIVE"] <- 1
+accepted_3$settlement_status[accepted_3$settlement_status == "BROKEN"] <- 0
+accepted_3$settlement_status[accepted_3$settlement_status == "COMPLETE"] <- 2
+
+accepted_3$id <- as.factor(accepted_3$id)
+accepted_3$issue_d <- as.factor(accepted_3$issue_d)
+accepted_3$addr_state <- as.factor(accepted_3$addr_state)
+accepted_3$earliest_cr_line <- as.factor(accepted_3$earliest_cr_line)
+accepted_3$last_pymnt_d <- as.factor(accepted_3$last_pymnt_d)
+accepted_3$last_credit_pull_d <- as.factor(accepted_3$last_credit_pull_d)
+accepted_3$sec_app_earliest_cr_line <- as.factor(accepted_3$sec_app_earliest_cr_line)
+accepted_3$debt_settlement_flag_date <- as.factor(accepted_3$debt_settlement_flag_date)
+accepted_3$settlement_date <- as.factor(accepted_3$settlement_date)
+
+accepted_3$id <- as.numeric(accepted_3$id)
+accepted_3$issue_d <- as.numeric(accepted_3$issue_d)
+accepted_3$addr_state <- as.numeric(accepted_3$addr_state)
+accepted_3$earliest_cr_line <- as.numeric(accepted_3$earliest_cr_line)
+accepted_3$last_pymnt_d <- as.numeric(accepted_3$last_pymnt_d)
+accepted_3$last_credit_pull_d <- as.numeric(accepted_3$last_credit_pull_d)
+accepted_3$sec_app_earliest_cr_line <- as.numeric(accepted_3$sec_app_earliest_cr_line)
+accepted_3$debt_settlement_flag_date <- as.numeric(accepted_3$debt_settlement_flag_date)
+accepted_3$settlement_date <- as.numeric(accepted_3$settlement_date)
+accepted_3$term <- as.numeric(accepted_3$term)
+accepted_3$grade <- as.numeric(accepted_3$grade)
+accepted_3$emp_length <- as.numeric(accepted_3$emp_length)
+accepted_3$home_ownership <- as.numeric(accepted_3$home_ownership)
+accepted_3$verification_status <- as.numeric(accepted_3$verification_status)
+accepted_3$loan_status <- as.numeric(accepted_3$loan_status)
+accepted_3$pymnt_plan <- as.numeric(accepted_3$pymnt_plan)
+accepted_3$purpose <- as.numeric(accepted_3$purpose)
+accepted_3$initial_list_status <- as.numeric(accepted_3$initial_list_status)
+accepted_3$application_type <- as.numeric(accepted_3$application_type)
+accepted_3$verification_status_joint <- as.numeric(accepted_3$verification_status_joint)
+accepted_3$disbursement_method <- as.numeric(accepted_3$disbursement_method)
+accepted_3$debt_settlement_flag <- as.numeric(accepted_3$debt_settlement_flag)
+accepted_3$settlement_status <- as.numeric(accepted_3$settlement_status)
+
+any(is.na(accepted_3))
+for(i in 1:ncol(accepted_3)){
+  accepted_3[is.na(accepted_3[,i]), i] <- mean(accepted_3[,i], na.rm = TRUE)
+}
+
+getNumericColumns<-function(t){
+     tn = sapply(t,function(x){is.numeric(x)})
+     return(names(tn)[which(tn)])
+ }
+high_corr <- findCorrelation(cor(accepted_4[getNumericColumns(accepted_4)]), cutoff = .75)
+high_corr = getNumericColumns(accepted_4)[high_corr]
+high_corr
+
+# EDA
+hist(accepted_2$dti)
+remove_outliers <- function(x, na.rm = TRUE, ...) {
+     qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)
+     H <- 1.5 * IQR(x, na.rm = na.rm)
+     y <- x
+     y[x < (qnt[1] - H)] <- NA
+     y[x > (qnt[2] + H)] <- NA
+     y
+ }
+dti_no_outliers <- remove_outliers(accepted_2$dti)
+hist(dti_no_outliers)
+
+hist(accepted_2$fico_range_high, xlab = "Fico Range High", main = "Histogram of High Fico Score", col = blues9)
+hist(accepted_2$fico_range_low, xlab = "Fico Range Low", main = "Histogram of Low Fico Score", col = gray.colors(9))
+hist(accepted_2$loan_amnt, xlab = "Loan Amount", main = "Histogram of Loan Amounts", col = heat.colors(4))
+hist(accepted_3$funded_amnt, xlab = "Funded Amount", main = "Histogram of Funded Amounts", col = heat.colors(4))
+hist(accepted_3$tot_cur_bal, xlab = "Total Current Balance", main = "Histogram of Current Balance of Accounts", col = topo.colors(10))
+
+cor(accepted_4)
+
+# GLM 
+set.seed(123)
+ind = sample(2, nrow(accepted_3), replace = TRUE, prob=c(0.7,0.3))
+trainloan = accepted_3[ind == 1,]
+testloan = accepted_3[ind == 2,]
+model <- glm(loan_status ~., family=binomial(link='logit'),data=trainloan)
+summary(model)
+anova(model, test="Chisq")
+install.packages("pscl")
+library(pscl)
+pR2(model)
+fitted.results <- predict(model,newdata=subset(testloan),type='response')
+fitted.results <- ifelse(fitted.results > 0.5,1,0)
+misClasificError <- mean(fitted.results != testloan$loan_status)
+print(paste('Accuracy',1-misClasificError))
+library(ROCR)
+p <- predict(model, newdata=subset(testloan), type="response")
+pr <- prediction(p, testloan$loan_status)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+plot(prf)
+auc <- performance(pr, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
+# Removal of Unnecessary Variables
+
+discard_column_2 = c("term","grade","verification_status",
+                    "pymnt_plan",
+                    "inq_last_6mths","initial_list_status",
+                    "total_rec_int","total_rec_prncp","last_pymnt_d",
+                    "last_credit_pull_d", "mths_since_rcnt_il", "total_cu_tl", "num_actv_rev_tl", "percent_bc_gt_75", "pub_rec_bankruptcies", "tax_liens", "total_bal_ex_mort", "sec_app_inq_last_6months", "sec_app_open_acc", "sec_app_revol_util", "sec_app_chargeoff_within_12_mths", "sec_app_mths_since_last_major_derog", "orig_projected_additional_accrued_interest", "debt_settlement_flag", "debt_settlement_flag_date", "settlement_date", "settlement_percentage"
+ )
+accepted_4 = (accepted_3[,!(names(accepted_3) %in% discard_column_2)])
+
+discard_column_3 = c("emp_length",
+                    "delinq_2yrs",
+                    "open_acc","revol_util",
+                    "out_prncp","annual_inc",
+                    "total_pymnt", "total_rec_late_fee", "last_pymnt_amnt", "application_type", "pct_tl_nvr_dlq", "settlement_status", "settlement_amount", "sec_app_fico_range_high", "open_acc", "num_bc_tl", "home_ownership", "purpose", "total_pymnt_inv", "open_acc_6m", "open_il_12m","all_util", "inq_last_12m","bc_open_to_buy","mo_sin_rcnt_tl","total_il_high_credit_limit","sec_app_inq_last_6mths","settlement_term"
+ )
+accepted_5 = (accepted_4[,!(names(accepted_4) %in% discard_column_3)])
+
+discard_column_4 = c("addr_state","revol_bal","out_prncp_inv",
+                    "total_cur_bal",
+                    "open_rv_12m","total_rev_hi_lim",
+                    "mo_sin_old_rev_tl_op","mo_sin_rcnt_rev_tl_op","mths_since_recent_bc_dlq",
+                    "num_il_tl", "num_rev_tl_bal_gt_0","disbursement_method","earliest_cr_line","total_acc","open_il_24m","il_util","collections_12_mths_ex_med","tot_coll_amt","num_actv_bc_tl"
+ )
+accepted_6 = (accepted_5[,!(names(accepted_5) %in% discard_column_4)])
+
+accepted_6$loan_status <- factor(accepted_6$loan_status)
+
+#Random Forest
+set.seed(123)
+ind = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
+trainloan = accepted_6[ind == 1,]
+testloan = accepted_6[ind == 2,]
+loan.rf = randomForest(loan_status ~ ., data=trainloan, importance = T)
+loan.rf
+loan.prediction = predict(loan.rf, testloan)
+confusionMatrix(table(loan.prediction, testloan$loan_status))
+importance(loan.rf)
+varImpPlot(loan.rf, main = "Importance of Variables in loan.rf")
+
+#Decision Tree
+loan.rp = rpart(loan_status ~ ., data = trainloan)
+loan.rp
+printcp(loan.rp)
+plotcp(loan.rp)
+summary(loan.rp)
+predictions = predict(loan.rp, testloan, type= "class")
+table(testloan$loan_status, predictions)
+confusionMatrix(table(predictions, testloan$loan_status))
+rpart.plot(loan.rp,tweak=1.3)
+min(loan.rp$cptable[,"xerror"])
+which.min(loan.rp$cptable[,"xerror"])
+loan.cp = loan.rp$cptable[2,"CP"]
+loan.cp
+prune.tree = prune(loan.rp, cp = loan.cp)
+rpart.plot(prune.tree,tweak=1.3)
+predictions.pt = predict(prune.tree, testloan, type="class")
+table(testloan$loan_status, predictions.pt)
+confusionMatrix(table(predictions.pt, testloan$loan_status))
+```
+

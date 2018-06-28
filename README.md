@@ -464,7 +464,7 @@ loan.prediction    0    1
                                           
        'Positive' Class : 0         
 
-![Variable Importance](Importance.png)
+![Variable Importance](importance.png)
 
 #### Decision Tree Model
 

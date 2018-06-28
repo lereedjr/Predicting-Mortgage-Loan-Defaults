@@ -97,9 +97,11 @@ hist(accepted_2$fico_range_low)
 
 ![Low Credit Histogram](hist_low.png)
 
+The total balance of the accounts was reviewed in the plot below.  The loan amounts ranged from $100,000 to %500,000 which is a typical range for mortgage loans.
 
-The process for the GLM model will be in the Models section below.  However, a couple of correlation 
-**NEED TO ADD MORE**
+hist(accepted_3$tot_cur_bal, xlab = "Total Current Balance", main = "Histogram of Current Balance of Accounts", col = topo.colors(10))
+
+![Total Current Blanace](balance.png)
 
 # Models
 The following packages need to be loaded for each model and graphs.

@@ -125,12 +125,12 @@ library(ROCR)
 
 I first split my data into a test and training set.  I then fit the model and the results produced nothing entirely significant.
 
-set.seed(123)
-ind = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
-trainloan = accepted_6[ind == 1,]
-testloan = accepted_6[ind == 2,]
-model <- glm(loan_status ~., family=binomial(link='logit'),data=trainloan)
-summary(model)
+set.seed(123)                                                                                                                           
+ind = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))                                                                       
+trainloan = accepted_6[ind == 1,]                                                                                                       
+testloan = accepted_6[ind == 2,]                                                                                                         
+model <- glm(loan_status ~., family=binomial(link='logit'),data=trainloan)                                                               
+summary(model)                                                                                                                           
 
 ![GLM](GLM.PNG)
 
@@ -142,16 +142,16 @@ anova(model, test="Chisq")
 
 #### Random Forest Model
 
-set.seed(123)
-indrf = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
-trainloanrf = accepted_6[indrf == 1,]
-testloanrf = accepted_6[indrf == 2,]
-loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)
-loan.rf
+set.seed(123)                                                                                                                           
+indrf = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))                                                                     
+trainloanrf = accepted_6[indrf == 1,]                                                                                                   
+testloanrf = accepted_6[indrf == 2,]                                                                                                     
+loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)                                                               
+loan.rf                                                                                                                                 
 
 ![Random Forest](RandomForest1.PNG)
 
-loan.prediction = predict(loan.rf, testloanrf)
+loan.prediction = predict(loan.rf, testloanrf)                                                                                           
 confusionMatrix(table(loan.prediction, testloanrf$loan_status))
 
 Confusion Matrix and Statistics
@@ -164,19 +164,19 @@ The importance variables are shown below.
 
 #### Decision Tree Model
 
-set.seed(123)
-inddt = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
-trainloandt = accepted_6[inddt == 1,]
-testloandt = accepted_6[inddt == 2,]
-confusionMatrix(table(predictions, testloandt$loan_status))
+set.seed(123)                                                                                                                           
+inddt = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))                                                                     
+trainloandt = accepted_6[inddt == 1,]                                                                                                   
+testloandt = accepted_6[inddt == 2,]                                                                                                     
+confusionMatrix(table(predictions, testloandt$loan_status))                                                                             
 
 ![Decision Tree Confusion Matrix](DecisionTree.PNG)
 
 ![Decision Tree](Decision_Tree.png)
 
-prune.tree = prune(loan.rp, cp = loan.cp)
-rpart.plot(prune.tree,tweak=1.3)
-predictions.pt = predict(prune.tree, testloandt, type="class")
+prune.tree = prune(loan.rp, cp = loan.cp)                                                                                               
+rpart.plot(prune.tree,tweak=1.3)                                                                                                         
+predictions.pt = predict(prune.tree, testloandt, type="class")                                                                           
 confusionMatrix(table(predictions.pt, testloandt$loan_status))
 
 ![Decision Tree Pruned](DecisionTreePruned.PNG)

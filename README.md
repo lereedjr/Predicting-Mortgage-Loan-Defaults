@@ -184,6 +184,18 @@ confusionMatrix(table(predictions.pt, testloandt$loan_status))
 
 # Analysis
 
+* The model that performed the best was the Random Forest model with 90.5% Accuracy.
+* The Decision Tree Model had a 90.2% Accuracy.
+* The GLM had a 90.1% Accuracy.
+* Credit score was an important feature for the Random Forest Model.
+* Each model didn't out perform the other.  The Random Forest Model just performed slightly better than the other models.
+* A lot of the variables were highly correlated and were good indicators of defaults versus no defaults.
+
 # Conclusion
 
+* I believe there is high correlation between loan status and credit score information.
+* I think that this data is very applicable to homeowners insurance and can be a great predictor for loss information.
+* I would like to take some next steps and apply the mortgage loan analysis to actual homeowners insurance data for further support.
+
 # References 
+https://www.kaggle.com/wordsforthewise/lending-club

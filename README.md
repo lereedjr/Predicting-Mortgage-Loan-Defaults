@@ -416,6 +416,11 @@ anova(model, test="Chisq")
 
 #### Random Forest Model
 
+set.seed(123)
+indrf = sample(2, nrow(accepted_6), replace = TRUE, prob=c(0.7,0.3))
+trainloanrf = accepted_6[indrf == 1,]
+testloanrf = accepted_6[indrf == 2,]
+loan.rf = randomForest(loan_status ~ ., data=trainloanrf, importance = T)
 loan.rf
 
 Call:
@@ -429,8 +434,10 @@ Confusion matrix:
     0    1 class.error
 0 468  262  0.35890411
 1 176 4203  0.04019182
-> loan.prediction = predict(loan.rf, testloanrf)
-> confusionMatrix(table(loan.prediction, testloanrf$loan_status))
+
+loan.prediction = predict(loan.rf, testloanrf)
+confusionMatrix(table(loan.prediction, testloanrf$loan_status))
+
 Confusion Matrix and Statistics
 
                
@@ -456,6 +463,9 @@ loan.prediction    0    1
       Balanced Accuracy : 0.78063         
                                           
        'Positive' Class : 0         
+
+![Variable Importance](Importance.png)
+
 #### Decision Tree Model
 
 
